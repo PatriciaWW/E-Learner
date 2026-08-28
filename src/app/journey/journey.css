@@ -1,0 +1,129 @@
+.container{
+    margin-top: 2em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 2rem;
+  }
+
+  .card{
+    border: 0;
+    outline: 0;
+  }
+
+  .card:nth-child(2) .box .icon .iconBox {
+    background: rgb(255, 161, 19);
+    color: black;
+  }
+
+  .card:nth-child(3) .box .icon .iconBox {
+    background: #ff0077;
+  }
+
+  .content {
+    padding: 0.938rem 0.625rem;
+  }
+
+  .content h3 {
+    text-transform: capitalize;
+    font-size: clamp(1.5rem, 1.3909rem + 0.4364vw, 1.8rem);
+  }
+
+  .card-inner {
+    position: relative;
+    width: inherit;
+    height: 18.75rem;
+    background: var(--clr);
+    border-radius: 1.25rem;
+    /* border-bottom-right-radius: 0; */
+    overflow: hidden;
+
+    box-shadow: 
+    /* inner top highlight */
+    inset 0 1px 0 0 #f4f4f4,       
+    0 1px 0 0 #efefef,
+    0 2px 0 0 #ececec,
+    0 4px 0 0 #e0e0e0,
+    0 5px 0 0 #dedede,
+    0 6px 0 0 #dcdcdc,
+    0 7px 0 0 #cacaca,
+    0 7px 8px 0 #cecece,
+
+    /* new right-hand side layers */
+    1px 0 0 0 #efefef,
+    2px 0 0 0 #ececec,
+    4px 0 0 0 #e0e0e0,
+    5px 0 0 0 #dedede,
+    6px 0 0 0 #dcdcdc,
+    7px 0 0 0 #cacaca,
+    8px 0 8px 0 #cecece;
+
+  }
+
+  .box {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  .imgBox {
+    position: absolute;
+    inset: 0;
+   
+  }
+
+  .imgBox img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .icon {
+    position: absolute;
+    bottom: -0.375rem;
+    right: -0.375rem;
+    width: 6rem;
+    height: 6rem;
+    background: var(--clr);
+    border-top-left-radius: 50%;
+  }
+
+  .icon:hover .iconBox {
+    transform: scale(1.1);
+  }
+
+  .icon::before {
+    position: absolute;
+    content: "";
+    bottom: 0.375rem;
+    left: -1.25rem;
+    background: transparent;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-bottom-right-radius: 1.25rem;
+    box-shadow: 0.313rem 0.313rem 0 0.313rem #fff;
+  }
+
+  .icon::after {
+    position: absolute;
+    content: "";
+    top: -1.25rem;
+    right: 0.375rem;
+    background: transparent;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-bottom-right-radius: 1.25rem;
+    box-shadow: 0.313rem 0.313rem 0 0.313rem var(--clr);
+  }
+
+  .iconBox {
+    position: absolute;
+    inset: 0.625rem;
+    background: #282828;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+  }
