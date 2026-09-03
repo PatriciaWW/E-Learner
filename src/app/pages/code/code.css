@@ -1,0 +1,4 @@
+.bg-code{
+    background-color: white;
+    border: 4px dashed var(--border-color);
+}

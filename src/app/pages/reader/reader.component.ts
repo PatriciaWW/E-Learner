@@ -5,6 +5,8 @@ import { SettingsService } from '../../services/settings.service';
 import { SpeechService } from '../../services/speech.service';
 import { TextProcessingService } from '../../services/text-processing.service';
 import { ReadingSession } from '../../models/profile.model';
+import { Nav } from '../nav/nav';
+import { Footer } from '../footer/footer';
 
 interface WordToken {
   text: string;
@@ -15,7 +17,7 @@ interface WordToken {
 @Component({
   selector: 'app-reader',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, Nav, Footer],
   templateUrl: './reader.component.html',
   styleUrl: './reader.component.css',
 })

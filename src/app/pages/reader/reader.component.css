@@ -9,14 +9,15 @@
 .controls-panel {
   width: 300px;
   flex-shrink: 0;
-  background: var(--sidebar-bg);
-  border-right: 1px solid var(--border-color);
+  background: white;
+  border-radius: 10px;
+  border: 3px dashed var(--border-color);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
-.panel-heading { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+.panel-heading { font-weight: bold; color: var(--text-secondary); }
 
 /* ---------- Main content ---------- */
 .reader-main {

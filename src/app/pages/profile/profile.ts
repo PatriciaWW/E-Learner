@@ -3,6 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 import { LearningMode } from '../../models/profile.model';
+import { Nav } from '../nav/nav';
+import { Footer } from '../footer/footer';
 
 const AVATARS: { emoji: string; label: string }[] = [
   { emoji: '🦁', label: 'Lion' },
@@ -16,7 +18,7 @@ const AVATARS: { emoji: string; label: string }[] = [
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule,Nav, Footer],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })

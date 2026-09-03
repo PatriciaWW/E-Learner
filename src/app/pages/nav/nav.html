@@ -1,34 +1,45 @@
-<nav class="navbar navbar-expand-lg cont navbar-light sticky-top" style="background-color: #fffdf7;">
-
+<nav class="navbar navbar-expand-lg cont navbar-light sticky-top" style="background-color: transparent;">
     <div class="container-fluid std">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon logo-badge"></span>
         </button>
 
-        <a class="navbar-brand me-5" routerLink="">    
-            <h1>E Learner</h1>
+        <a class="navbar-brand me-5" routerLink="">
+            <h1 class="bungee">E Learner</h1>
         </a>
 
         <div class="navbar-text justify-content-center align-self-center ">
             <a class="" routerLink=""><span class="badge position-absolute top-0 start-100 translate-middle count "></span></a>
         </div>
 
+
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mt-3 mb-2 mb-lg-0 mx-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/">Home</a>
+                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/reader" routerLinkActive="active-link">📖 Reader</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/journey">Journey</a>
+                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/journey" routerLinkActive="active-link">🗺️🌈 Journey</a>
+                </li>   
+                <li class="nav-item">
+                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/code" routerLinkActive="active-link">💻 Code</a>
                 </li>
-            
-                
+                <li class="nav-item"> 
+                    <a class="nav-link me-5 mb-2 text-black fw-bold" routerLink="/profile" routerLinkActive="active-link">🧑 Profile</a>
+                </li>
             </ul>
             
         </div>
+        <div class="spacer"></div>
+        <div class="nav-profile fw-bold">
+            <span class="nav-avatar">{{ profile?.avatar }}</span>
+            {{ profile?.name }} · ⭐ {{ profile?.totalScore }}
+        </div>
         
-        
+    
+
     </div>
+
 
 </nav>
     

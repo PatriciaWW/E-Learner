@@ -8,7 +8,6 @@
   width: 100%;
 }
 
-.profile-page > h2 { color: var(--primary-color); font-size: 1.7rem; }
 
 .profile-summary {
   display: flex;
@@ -17,9 +16,13 @@
   max-width: none;
 }
 .big-avatar { font-size: 3rem; }
-.profile-page-name { font-size: 1.3rem; font-weight: 700; color: var(--primary-color); }
-.profile-page-score { color: var(--text-secondary); }
+.profile-page-name {
+  color: var(--text-secondary); 
+}
 
+.profile-page-score{
+  color: var(--primary-color);
+}
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -27,7 +30,7 @@
 }
 .stat-card {
   background: var(--card-bg);
-  border: 2px solid var(--border-color);
+  border: 4px dashed var(--border-color);
   border-radius: var(--radius);
   padding: 1.25rem;
   box-shadow: var(--shadow-sm);
@@ -35,7 +38,7 @@
 }
 .stat-icon { font-size: 2rem; margin-bottom: 0.4rem; }
 .stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
-.stat-value { font-size: 1.6rem; font-weight: 700; color: var(--primary-color); }
+.stat-value { font-size: 1.6rem; font-weight: bold; color: var(--primary-color); }
 
 form.card { max-width: none; }
 .profile-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }

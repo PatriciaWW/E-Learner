@@ -1,19 +1,24 @@
+<section class="std">
+
+
 <div class="register-screen">
-  <div class="profile-hero">
+  <div class="profile-hero text-center">
     <div class="profile-logo">
       <svg viewBox="0 0 40 40" width="48" height="48" aria-hidden="true">
-        <circle cx="20" cy="20" r="20" fill="#0b5b94" />
+        <circle cx="20" cy="20" r="20" fill="cyan" />
         <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18"
           font-family="Lexend,sans-serif" font-weight="bold">EL</text>
       </svg>
-      <h1>E-LEARNER</h1>
+      <h1 class="bungee">E-LEARNER</h1>
     </div>
-    <p class="profile-tagline">Personalised learning for every student</p>
+    
+    <h5 class="">Personalised learning for every student</h5>
   </div>
 
   @if (existingProfiles().length) {
+    <h3 class="text-center">Welcome back!</h3>
+
     <div class="profile-card-area" aria-label="Existing student profiles">
-      <h3 class="welcome-back">Welcome back!</h3>
       @for (p of existingProfiles(); track p.id) {
         <button class="profile-card" [attr.aria-label]="'Continue as ' + p.name + ', score ' + p.totalScore"
           (click)="continueAs(p)">
@@ -25,7 +30,7 @@
     </div>
   }
 
-  <form class="card" (ngSubmit)="register()" #f="ngForm">
+  <form class="carda" (ngSubmit)="register()" #f="ngForm">
     <h2>Create Your Profile</h2>
 
     <div class="form-group">
@@ -62,3 +67,6 @@
     <button type="submit" class="primary-btn full-width">Start Learning →</button>
   </form>
 </div>
+
+
+</section>

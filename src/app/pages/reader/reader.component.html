@@ -1,8 +1,13 @@
+<app-nav />
+
+<section class="std mb-2 p-3">
+      <h3 class="udog mt-4 wobble fw-bold text-center" data-animation="leap">My Reading</h3>
+
 <div class="reader-page">
 
   <!-- ================= Reading display controls (font, size, spacing, voice) ================= -->
   <aside class="controls-panel" aria-label="Display and reading controls">
-    <h3 class="panel-heading">🔧 Reading Preferences</h3>
+    <h6 class="panel-heading">🛠️⚙️ Reading Preferences</h6>
 
     <div class="control-group">
       <label for="font-family">Font Style</label>
@@ -67,7 +72,7 @@
           <p>Supports .txt documents, images, audio and video</p>
           <input #fileInput type="file" class="hidden-input" accept=".txt,image/*,audio/*,video/*"
             (change)="onFileInputChange($event)" (click)="$event.stopPropagation()" />
-          <button type="button" class="secondary-btn mt-1" (click)="browse(); $event.stopPropagation()">Browse
+          <button type="button" class="secondary-btn squishy-btn mt-1" (click)="browse(); $event.stopPropagation()">Browse
             Files</button>
         </div>
 
@@ -81,7 +86,7 @@
             <p class="error-text">{{ uploadError }}</p>
           }
           <div class="button-row">
-            <button type="button" class="primary-btn" (click)="startLearning()">▶ Start Learning</button>
+            <button type="button" class="primary-btn squishy-btn" (click)="startLearning()">▶  Start Learning</button>
           </div>
         </div>
       </section>
@@ -137,4 +142,9 @@
       </section>
     }
   </main>
+
 </div>
+
+</section>
+
+<app-footer />

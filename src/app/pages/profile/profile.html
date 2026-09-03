@@ -1,11 +1,15 @@
-@if (profile(); as p) {
-  <div class="profile-page">
-    <h2>Your Profile</h2>
+<app-nav />
 
-    <div class="profile-summary card">
+@if (profile(); as p) {
+<section class="std mb-2 p-3">
+
+  <div class="profile-page">
+    <h3 class="text-center udog fw-bold">My Profile</h3>
+
+    <div class="profile-summary carda">
       <span class="big-avatar">{{ avatar }}</span>
       <div>
-        <div class="profile-page-name">{{ p.name }}</div>
+        <h3 class="profile-page-name">{{ p.name }}</h3>
         <div class="profile-page-score">⭐ {{ p.totalScore }} pts · {{ p.sessionsCount }} sessions</div>
       </div>
     </div>
@@ -30,8 +34,8 @@
       </div>
     }
 
-    <form class="card" (ngSubmit)="save()">
-      <h2>Customise Profile</h2>
+    <form class="card carda" (ngSubmit)="save()">
+      <h3 class="udog">Customise Profile</h3>
 
       <div class="form-group">
         <label for="edit-name">Your Name</label>
@@ -61,8 +65,8 @@
       </div>
 
       <div class="profile-actions">
-        <button type="submit" class="primary-btn">Save Changes</button>
-        <button type="button" class="secondary-btn" (click)="switchProfile()">Switch Profile</button>
+        <button type="submit" class="primary-btn squishy-btn">Save Changes</button>
+        <button type="button" class="secondary-btn squishy-btn" (click)="switchProfile()">Switch Profile</button>
       </div>
 
       @if (savedJustNow()) {
@@ -70,4 +74,10 @@
       }
     </form>
   </div>
+
+
+</section>
 }
+
+
+<app-footer />
