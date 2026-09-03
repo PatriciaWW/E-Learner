@@ -5,7 +5,7 @@ import { Footer } from '../footer/footer';
 
 @Component({
   selector: 'app-journey',
-  imports: [RouterLink,Nav,Footer],
+  imports: [RouterLink],
   templateUrl: './journey.html',
   styleUrl: './journey.css',
 })

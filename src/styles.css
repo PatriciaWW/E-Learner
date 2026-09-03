@@ -1,9 +1,250 @@
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Underdog&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap');
+
+/* You can add global styles to this file, and also import other style files */
+.form-group label, .form-group .group-label {
+  font-weight: 500;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  display: block;
+}
+/* Google Fonts are linked in index.html (not @imported here) so the production
+   build doesn't try to inline them at build time. */
+
+:root {
+  --bg-color: #fdf6e3;
+  --sidebar-bg: #eee8d5;
+  --text-primary: #1c1c1c;
+  --text-secondary: #3b3b3b;
+  --primary-color: #0b5b94;
+  --primary-hover: #08436b;
+  --accent-color: #a33b11;
+  --highlight-bg: #ffe066;
+  --highlight-text: #1a1000;
+  --border-color: #cbc3a9;
+  --card-bg: #ffffff;
+  --success-color: #2e7d32;
+  --error-color: #c62828;
+  --font-family: 'Lexend', sans-serif;
+  --font-size: 24px;
+  --line-height: 1.8;
+  --letter-spacing: 1.5px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 28px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease;
+  --radius: 12px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* chrome (nav, buttons) stays legible; reading areas opt into --font-family */
+  color: var(--text-primary);
+  background: var(--bg-color);
+  overflow-x: hidden;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Buttons ---------- */
+.primary-btn, .secondary-btn {
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  border: 2px solid transparent;
+  font-family: inherit;
+}
+
+.primary-btn {
+  background: var(--primary-color);
+  color: white;
+}
+.primary-btn:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.primary-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.secondary-btn {
+  background: var(--card-bg);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.secondary-btn:hover { background: var(--sidebar-bg); }
+
+.icon-btn {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  line-height: 0;
+}
+.icon-btn:hover { background: var(--sidebar-bg); color: var(--primary-color); border-color: var(--primary-color); }
+.icon-btn svg { width: 22px; height: 22px; }
+.icon-btn.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+.full-width { width: 100%; }
+.hidden { display: none !important; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+
+/* ---------- Cards & forms ---------- */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 480px;
+}
+.card h2 { margin-bottom: 1.5rem; font-size: 1.5rem; color: var(--primary-color); }
+
+.form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+.form-group label { font-weight: 500; font-size: 1rem; color: var(--text-secondary); }
+
+.form-input {
+  padding: 0.8rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  background: var(--bg-color);
+  width: 100%;
+  transition: var(--transition);
+}
+.form-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(11, 91, 148, 0.2); }
+.form-input.error { border-color: var(--error-color); }
+.error-text { color: var(--error-color); font-size: 0.85rem; }
+
+.avatar-picker { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.avatar-btn {
+  font-size: 2rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid var(--border-color);
+  background: var(--bg-color);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.avatar-btn:hover, .avatar-btn.selected { border-color: var(--primary-color); background: #e3f0fb; transform: scale(1.1); }
+
+.control-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.control-group label { font-size: 0.95rem; font-weight: 500; color: var(--text-secondary); display: flex; justify-content: space-between; }
+.control-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+.control-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(11, 91, 148, 0.25); }
+
+input[type=range] { -webkit-appearance: none; background: transparent; padding: 0; border: none; width: 100%; }
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px; width: 20px; border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer; margin-top: -8px; box-shadow: var(--shadow-sm);
+}
+input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; background: var(--border-color); border-radius: 2px; }
+
+/* ---------- Top nav shell ---------- */
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0.9rem 1.5rem;
+  background: var(--sidebar-bg);
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.top-nav .brand { display: flex; align-items: center; gap: 0.6rem; font-weight: 600; font-size: 1.1rem; color: var(--primary-color); }
+.top-nav .brand .logo-badge {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--primary-color); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;
+}
+.top-nav nav { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.top-nav nav a {
+  padding: 0.5rem 0.9rem; border-radius: 8px; font-weight: 500; color: var(--text-secondary); transition: var(--transition);
+}
+.top-nav nav a:hover { background: var(--card-bg); color: var(--primary-color); }
+.top-nav nav a.active-link { background: var(--primary-color); color: #fff; }
+.top-nav .spacer { flex: 1; }
+.top-nav .nav-profile { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: var(--primary-color); }
+.top-nav .nav-avatar { font-size: 1.4rem; }
+.app-main { flex: 1; display: flex; }
+
+/* ---------- Misc shared ---------- */
+.summary-banner {
+  background: linear-gradient(135deg, #e8f4fd, #d0eaff);
+  border-left: 4px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 0.85rem 1.1rem;
+  margin-bottom: 1.2rem;
+  font-size: clamp(0.85rem, 1.6vw, 0.98rem);
+  color: var(--text-primary);
+  line-height: 1.55;
+}
+.summary-label { display: block; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary-color); margin-bottom: 0.35rem; }
+
+.badge {
+  background: #fff3cd; color: #856404; font-size: 0.7rem; padding: 0.2rem 0.5rem;
+  border-radius: 4px; font-weight: 600; white-space: nowrap;
+}
+
+.app-main { flex: 1; display: flex; min-width: 0; }
+.app-main > router-outlet + * { flex: 1; display: flex; min-width: 0; }
 
 
 

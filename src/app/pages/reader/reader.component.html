@@ -1,0 +1,140 @@
+<div class="reader-page">
+
+  <!-- ================= Reading display controls (font, size, spacing, voice) ================= -->
+  <aside class="controls-panel" aria-label="Display and reading controls">
+    <h3 class="panel-heading">🔧 Reading Preferences</h3>
+
+    <div class="control-group">
+      <label for="font-family">Font Style</label>
+      <select id="font-family" class="control-input" [ngModel]="settings.fontFamily"
+        (ngModelChange)="onFontFamilyChange($event)">
+        <option value="'Lexend', sans-serif">Lexend (Dyslexia Friendly)</option>
+        <option value="'Inter', sans-serif">Inter (Clean)</option>
+        <option value="'Roboto Mono', monospace">Roboto Mono (Separated)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="font-size">Text Size: <span>{{ settings.fontSize }}px</span></label>
+      <input type="range" id="font-size" class="control-input" min="16" max="48" [ngModel]="settings.fontSize"
+        (ngModelChange)="onFontSizeChange($event)" />
+    </div>
+
+    <div class="control-group">
+      <label for="line-height">Line Spacing: <span>{{ settings.lineHeight }}</span></label>
+      <input type="range" id="line-height" class="control-input" min="1.0" max="3.0" step="0.1"
+        [ngModel]="settings.lineHeight" (ngModelChange)="onLineHeightChange($event)" />
+    </div>
+
+    <div class="control-group">
+      <label for="letter-spacing">Letter Spacing: <span>{{ settings.letterSpacing }}px</span></label>
+      <input type="range" id="letter-spacing" class="control-input" min="0" max="5" step="0.5"
+        [ngModel]="settings.letterSpacing" (ngModelChange)="onLetterSpacingChange($event)" />
+    </div>
+
+    <div class="control-group">
+      <label for="voice-select">Reading Voice</label>
+      <select id="voice-select" class="control-input" [ngModel]="voiceIndex"
+        (ngModelChange)="onVoiceChange($event)">
+        @for (v of speech.voices(); track v.name; let i = $index) {
+          <option [value]="i">{{ v.name }} ({{ v.lang }})</option>
+        }
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="speech-rate">Reading Speed: <span>{{ settings.speechRate }}x</span></label>
+      <input type="range" id="speech-rate" class="control-input" min="0.5" max="2" step="0.1"
+        [ngModel]="settings.speechRate" (ngModelChange)="onRateChange($event)" />
+    </div>
+  </aside>
+
+  <!-- ================= Main content ================= -->
+  <main class="reader-main">
+
+    @if (view() === 'upload') {
+      <section class="upload-section" aria-labelledby="upload-heading">
+        <h2 id="upload-heading" class="sr-only">Add a document to read</h2>
+
+        <div class="upload-zone" [class.drag-over]="dragOver" tabindex="0" role="button"
+          aria-label="Drag and drop a document here, or click to browse" (click)="browse()"
+          (dragover)="onDragOver($event)" (dragleave)="onDragLeave()" (drop)="onDrop($event)">
+          <div class="upload-icons-row" aria-hidden="true">
+            <span title="Document">📄</span><span title="Image">🖼️</span><span title="Audio">🎵</span><span
+              title="Video">🎬</span>
+          </div>
+          <h3>Drag &amp; Drop a Document Here</h3>
+          <p>Supports .txt documents, images, audio and video</p>
+          <input #fileInput type="file" class="hidden-input" accept=".txt,image/*,audio/*,video/*"
+            (change)="onFileInputChange($event)" (click)="$event.stopPropagation()" />
+          <button type="button" class="secondary-btn mt-1" (click)="browse(); $event.stopPropagation()">Browse
+            Files</button>
+        </div>
+
+        <div class="divider"><span>OR</span></div>
+
+        <div class="paste-zone">
+          <label for="text-input" class="sr-only">Paste text here</label>
+          <textarea id="text-input" [(ngModel)]="pastedText"
+            placeholder="Paste your reading assignment, article, or notes here..." rows="6"></textarea>
+          @if (uploadError) {
+            <p class="error-text">{{ uploadError }}</p>
+          }
+          <div class="button-row">
+            <button type="button" class="primary-btn" (click)="startLearning()">▶ Start Learning</button>
+          </div>
+        </div>
+      </section>
+    }
+
+    @if (view() === 'reading') {
+      <section class="reading-section" aria-labelledby="reading-heading">
+        <h2 id="reading-heading" class="sr-only">Reading area</h2>
+
+        <div class="session-progress-bar">
+          <div class="session-progress-fill" [style.width.%]="progressPct()"></div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="reader-toolbar">
+          <button class="icon-btn" [class.active]="speech.speaking() && !speech.paused()" (click)="play()"
+            aria-label="Play text-to-speech" title="Play">▶</button>
+          <button class="icon-btn" (click)="pause()" aria-label="Pause text-to-speech" title="Pause">⏸</button>
+          <button class="icon-btn" (click)="stop()" aria-label="Stop text-to-speech" title="Stop">⏹</button>
+          <button class="icon-btn" (click)="exportSummary()" aria-label="Download summary" title="Download Summary">⬇</button>
+          <div class="spacer"></div>
+          <div class="chunk-progress">Section {{ currentChunkIndex() + 1 }} of {{ chunks().length }}</div>
+        </div>
+
+        <!-- Whole-document summary -->
+        <div class="summary-banner" aria-label="Full document summary">
+          <span class="summary-label">📖 Document Summary</span>
+          <p>{{ documentSummary() }}</p>
+        </div>
+
+        <!-- Per-section summary -->
+        <div class="summary-banner section-summary" aria-label="This section's summary">
+          <span class="summary-label">🧩 Section Summary</span>
+          <p>{{ currentSummary() }}</p>
+        </div>
+
+        <!-- Reading display with word-by-word TTS highlight -->
+        <div class="reader-display" [style.font-family]="settings.fontFamily" [style.font-size.px]="settings.fontSize"
+          [style.line-height]="settings.lineHeight" [style.letter-spacing.px]="settings.letterSpacing"
+          aria-live="assertive">
+          @for (w of words(); track $index) {
+            <span class="word" [class.highlight]="$index === highlightedWordIndex()">{{ w.text }}</span>{{ ' ' }}
+          }
+        </div>
+
+        <div class="navigation-row">
+          <button class="secondary-btn" (click)="startOver()">Start Over</button>
+          <div class="spacer"></div>
+          <button class="primary-btn" (click)="nextChunk()">
+            {{ currentChunkIndex() + 1 < chunks().length ? 'Next Section →' : 'Finish' }}
+          </button>
+        </div>
+      </section>
+    }
+  </main>
+</div>

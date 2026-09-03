@@ -1,0 +1,64 @@
+<div class="register-screen">
+  <div class="profile-hero">
+    <div class="profile-logo">
+      <svg viewBox="0 0 40 40" width="48" height="48" aria-hidden="true">
+        <circle cx="20" cy="20" r="20" fill="#0b5b94" />
+        <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18"
+          font-family="Lexend,sans-serif" font-weight="bold">EL</text>
+      </svg>
+      <h1>E-LEARNER</h1>
+    </div>
+    <p class="profile-tagline">Personalised learning for every student</p>
+  </div>
+
+  @if (existingProfiles().length) {
+    <div class="profile-card-area" aria-label="Existing student profiles">
+      <h3 class="welcome-back">Welcome back!</h3>
+      @for (p of existingProfiles(); track p.id) {
+        <button class="profile-card" [attr.aria-label]="'Continue as ' + p.name + ', score ' + p.totalScore"
+          (click)="continueAs(p)">
+          <span class="card-avatar">{{ p.avatar }}</span>
+          <span class="card-name">{{ p.name }}</span>
+          <span class="card-score">⭐ {{ p.totalScore }} pts</span>
+        </button>
+      }
+    </div>
+  }
+
+  <form class="card" (ngSubmit)="register()" #f="ngForm">
+    <h2>Create Your Profile</h2>
+
+    <div class="form-group">
+      <label for="student-name">Your Name</label>
+      <input type="text" id="student-name" name="name" placeholder="e.g. Alex" class="form-input"
+        [class.error]="nameError" [(ngModel)]="name" autocomplete="given-name" aria-required="true" />
+      @if (nameError) {
+        <span class="error-text">Please enter a name to continue.</span>
+      }
+    </div>
+
+    <div class="form-group">
+     <span class="group-label" id="avatar-picker-label">Choose an Avatar</span>
+    <div class="avatar-picker" role="radiogroup" aria-labelledby="avatar-picker-label">
+        @for (a of avatars; track a.emoji) {
+          <button type="button" class="avatar-btn" [class.selected]="selectedAvatar === a.emoji"
+            [attr.aria-pressed]="selectedAvatar === a.emoji" [attr.aria-label]="a.label" (click)="pickAvatar(a.emoji)">
+            {{ a.emoji }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="learning-mode">Preferred Learning Mode</label>
+      <select id="learning-mode" name="learningMode" class="form-input" [(ngModel)]="learningMode">
+        <option value="audio">Audio First (I listen well)</option>
+        <option value="visual">Visual First (I learn from images)</option>
+        <option value="reading">Reading First (I prefer text)</option>
+        <option value="mixed">Mixed (Show me everything)</option>
+      </select>
+    </div>
+
+    <button type="submit" class="primary-btn full-width">Start Learning →</button>
+  </form>
+</div>

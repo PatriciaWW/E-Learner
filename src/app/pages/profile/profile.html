@@ -1,0 +1,73 @@
+@if (profile(); as p) {
+  <div class="profile-page">
+    <h2>Your Profile</h2>
+
+    <div class="profile-summary card">
+      <span class="big-avatar">{{ avatar }}</span>
+      <div>
+        <div class="profile-page-name">{{ p.name }}</div>
+        <div class="profile-page-score">⭐ {{ p.totalScore }} pts · {{ p.sessionsCount }} sessions</div>
+      </div>
+    </div>
+
+    @if (stats(); as s) {
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📚</div>
+          <div class="stat-label">Sessions Completed</div>
+          <div class="stat-value">{{ s.sessionsCompleted }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🧾</div>
+          <div class="stat-label">Total Sessions Started</div>
+          <div class="stat-value">{{ s.totalSessions }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-label">Total Score</div>
+          <div class="stat-value">{{ s.totalScore }}</div>
+        </div>
+      </div>
+    }
+
+    <form class="card" (ngSubmit)="save()">
+      <h2>Customise Profile</h2>
+
+      <div class="form-group">
+        <label for="edit-name">Your Name</label>
+        <input type="text" id="edit-name" name="name" class="form-input" [(ngModel)]="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="edit-avatar-picker">Avatar</label>
+        <div class="avatar-picker" id="edit-avatar-picker" role="radiogroup" aria-label="Choose avatar">
+          @for (a of avatars; track a.emoji) {
+            <button type="button" class="avatar-btn" [class.selected]="avatar === a.emoji"
+              [attr.aria-pressed]="avatar === a.emoji" [attr.aria-label]="a.label" (click)="pickAvatar(a.emoji)">
+              {{ a.emoji }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="edit-learning-mode">Preferred Learning Mode</label>
+        <select id="edit-learning-mode" name="learningMode" class="form-input" [(ngModel)]="learningMode">
+          <option value="audio">Audio First (I listen well)</option>
+          <option value="visual">Visual First (I learn from images)</option>
+          <option value="reading">Reading First (I prefer text)</option>
+          <option value="mixed">Mixed (Show me everything)</option>
+        </select>
+      </div>
+
+      <div class="profile-actions">
+        <button type="submit" class="primary-btn">Save Changes</button>
+        <button type="button" class="secondary-btn" (click)="switchProfile()">Switch Profile</button>
+      </div>
+
+      @if (savedJustNow()) {
+        <p class="saved-msg" aria-live="polite">✅ Profile updated.</p>
+      }
+    </form>
+  </div>
+}
