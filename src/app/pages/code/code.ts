@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
@@ -22,16 +22,13 @@ export class Code implements OnInit, AfterViewInit{
 
   editor!: monaco.editor.IStandaloneCodeEditor;
   output: string = ''; 
-  ai_output : string = '';
   topic: any;
   t_name:any;
-  selected_prompt:any;
-  prompts = '';
 
 
   private route = inject(ActivatedRoute)
   private platformId = inject(PLATFORM_ID)
-  private api = inject(ApiS)
+  private cdr = inject(ChangeDetectorRef)
 
 
 
@@ -39,13 +36,28 @@ export class Code implements OnInit, AfterViewInit{
 
 
   ngAfterViewInit(): void {
+    // if (isPlatformBrowser(this.platformId)) {
+
+    //   (window as any).MonacoEnvironment = {
+    //     getWorker() {
+    //   return new Worker(
+    //     '/assets/monaco-editor/vs/editor/editor.worker.js',
+    //     { type: 'module' }
+    //   );
+    // }
+    // };
+    //   this.loadMonacoEditor();
+    // }
+
     if (isPlatformBrowser(this.platformId)) {
+
       (window as any).MonacoEnvironment = {
         getWorkerUrl: function (_moduleId: any, label: string) {
           return `/assets/monaco-editor/vs/base/worker/workerMain.js`;
         }
       };
       this.loadMonacoEditor();
+
     }
   }
 
@@ -55,8 +67,7 @@ export class Code implements OnInit, AfterViewInit{
     // Dynamically import monaco-editor
     const monaco = await import('monaco-editor');
     this.editor = monaco.editor.create(this.editorContainer.nativeElement, {
-      // value: `print("Hello, Python World!")` ,
-      value: this.topic.starterCode,
+      value: `print("Hello, Python World!")` ,
       language: 'python',
       automaticLayout: true,  // Ensure the editor resizes with the container
       readOnly: false, 
@@ -77,25 +88,31 @@ export class Code implements OnInit, AfterViewInit{
   }
 
 
-// load pre written prompts for the ai to answer 
-  loadPrompts(){
-    this.ai_output = "";
-  }
-
-
-  // Get python code from the backend api
-  async fetchPythonCode(event: Event): Promise<void> {
-    const target = event.target as HTMLSelectElement;
-    
-  }
-
 
 // let monaco editor interpret and run the python code
-  runPythonCode(){}
+  async runPythonCode(){
+     const pythonCode = this.editor.getValue();
+
+    try {
+      // Run the Python code using Pyodide
+      const result = await this.pyodide.runPythonAsync(pythonCode);
+
+      if (result !== undefined && result !== null) {
+        this.output = String(result);
+      }
+
+      if (!this.output.trim()) {
+        this.output = 'Code executed successfully!'; // Default message if no output
+      }
+
+      this.cdr.detectChanges();
+    } catch (error:any) {
+      this.output = `Error: ${error.message}`;
+    }
+    this.cdr.detectChanges();
+  }
 
 
-// explain the python code using ai
-  runPythonAi(){}
 
 
 }

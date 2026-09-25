@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './services/auth.guard';
 import { Journey } from './pages/journey/journey';
 import { Code } from './pages/code/code';
+import { Quiz } from './pages/quiz/quiz';
 
 export const routes: Routes = [
     {
@@ -28,6 +29,13 @@ export const routes: Routes = [
     { 
         path: 'code', 
         component: Code, 
+        pathMatch: 'full' ,
+        canActivate: [authGuard],
+        title : "E-Learning" 
+    },
+    { 
+        path: 'quiz', 
+        component: Quiz, 
         pathMatch: 'full' ,
         canActivate: [authGuard],
         title : "E-Learning" 
