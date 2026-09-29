@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { QuizQuestion } from '../models/quiz.model'; // add to imports at top
+
 
 const STOP_WORDS = new Set([
   'about', 'after', 'again', 'against', 'because', 'before', 'being', 'below',
@@ -86,4 +88,39 @@ export class TextProcessingService {
 
     return top.join(' ');
   }
+
+
+// add as a new method on TextProcessingService
+generateQuizQuestions(text: string, count = 3): QuizQuestion[] {
+  const sentences = this.extractSentences(text).filter(s => s.split(' ').length <= 25);
+  const keywords = this.extractKeywords(text).slice(0, 12);
+  if (!sentences.length || keywords.length < 4) return []; // not enough content for a fair quiz
+
+  const questions: QuizQuestion[] = [];
+  const used = new Set<string>();
+
+  for (const keyword of keywords) {
+    if (questions.length >= count) break;
+    if (used.has(keyword)) continue;
+
+    const pattern = new RegExp(`\\b${keyword}\\b`, 'i');
+    const sentence = sentences.find(s => pattern.test(s));
+    if (!sentence) continue;
+
+    const distractors = keywords
+      .filter(k => k !== keyword && !used.has(k))
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+    if (distractors.length < 3) continue;
+
+    questions.push({
+      id: `q${questions.length + 1}`,
+      question: sentence.replace(pattern, '_____'),
+      options: [keyword, ...distractors].sort(() => Math.random() - 0.5),
+      correctAnswer: keyword,
+    });
+    used.add(keyword);
+  }
+  return questions;
+}
 }

@@ -5,6 +5,7 @@ import { DbService } from '../../services/db.service';
 import { LearningMode } from '../../models/profile.model';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
+import { BadgeService } from '../../services/badge.service';
 
 const AVATARS: { emoji: string; label: string }[] = [
   { emoji: '🦁', label: 'Lion' },
@@ -67,4 +68,11 @@ export class ProfileComponent {
     this.db.logout();
     this.router.navigate(['/register']);
   }
+
+  // profile.ts
+  private badgeService = inject(BadgeService);
+  readonly badges = computed(() => {
+    const p = this.profile();
+    return p ? this.badgeService.getBadgesForProfile(p) : [];
+  });
 }

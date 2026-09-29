@@ -1,0 +1,13 @@
+@if (visibleBadges().length) {
+  <div class="badge-toast-stack" role="status" aria-live="polite">
+    @for (b of visibleBadges(); track b.id) {
+      <div class="badge-toast" (click)="dismiss()">
+        <span class="badge-toast-icon">{{ b.icon }}</span>
+        <div>
+          <div class="badge-toast-title">🎉 New badge!</div>
+          <div class="badge-toast-name">{{ b.name }}</div>
+        </div>
+      </div>
+    }
+  </div>
+}

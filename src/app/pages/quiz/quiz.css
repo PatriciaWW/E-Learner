@@ -1,0 +1,14 @@
+.quiz-card { max-width: 600px; margin: 0 auto; text-align: center; }
+.quiz-question { font-size: 1.15rem; font-weight: 600; margin: 1rem 0 1.5rem; }
+.quiz-options { display: grid; gap: 0.75rem; margin-bottom: 1.5rem; }
+.quiz-option {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.quiz-option.correct { border-color: #2ecc71; background: #eafff2; }
+.quiz-option.incorrect { border-color: #e74c3c; background: #fff0ee; }
+.quiz-option:disabled { cursor: default; }

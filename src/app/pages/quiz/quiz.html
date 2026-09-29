@@ -1,1 +1,23 @@
-<p>quiz works!</p>
+@if (currentQuestion; as q) {
+  <div class="quiz-card">
+    <div class="quiz-progress">Question {{ currentIndex() + 1 }} of {{ questions.length }}</div>
+    <p class="quiz-question">{{ q.question }}</p>
+    <div class="quiz-options">
+      @for (opt of q.options; track opt) {
+        <button
+          class="quiz-option"
+          [class.correct]="answered() && opt === q.correctAnswer"
+          [class.incorrect]="answered() && opt === selected() && opt !== q.correctAnswer"
+          [disabled]="answered()"
+          (click)="choose(opt)">
+          {{ opt }}
+        </button>
+      }
+    </div>
+    @if (answered()) {
+      <button class="primary-btn" (click)="next()">
+        {{ currentIndex() + 1 < questions.length ? 'Next Question →' : 'See Results' }}
+      </button>
+    }
+  </div>
+}

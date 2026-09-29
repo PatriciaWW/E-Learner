@@ -32,6 +32,24 @@
           <div class="stat-value">{{ s.totalScore }}</div>
         </div>
       </div>
+      <!-- profile.html, inside the @if (profile(); as p) block, after the stats-grid -->
+      <div class="badges-section">
+        <h3 class="udog">Badges</h3>
+        <div class="badges-grid">
+          @for (b of badges(); track b.id) {
+            <div class="badge-card" [class.locked]="!b.earned">
+              <div class="badge-icon">{{ b.icon }}</div>
+              <div class="badge-name">{{ b.name }}</div>
+              <div class="badge-desc">{{ b.description }}</div>
+              @if (!b.earned) {
+                <div class="badge-progress-track">
+                  <div class="badge-progress-fill" [style.width.%]="b.progress"></div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
     }
 
     <form class="card carda" (ngSubmit)="save()">

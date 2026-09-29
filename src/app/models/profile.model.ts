@@ -8,6 +8,9 @@ export interface StudentProfile {
   totalScore: number;
   sessionsCount: number;
   createdAt: string;
+  lastActiveDate: string | null; // 'YYYY-MM-DD', local calendar date of last login
+  currentStreak: number;
+  longestStreak: number;
 }
 
 export interface ReadingSession {

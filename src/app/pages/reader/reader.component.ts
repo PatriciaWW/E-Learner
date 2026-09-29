@@ -7,6 +7,8 @@ import { TextProcessingService } from '../../services/text-processing.service';
 import { ReadingSession } from '../../models/profile.model';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
+import { Quiz } from '../quiz/quiz';
+import { QuizQuestion } from '../../models/quiz.model';
 
 interface WordToken {
   text: string;
@@ -17,7 +19,7 @@ interface WordToken {
 @Component({
   selector: 'app-reader',
   standalone: true,
-  imports: [FormsModule, Nav, Footer],
+  imports: [FormsModule, Nav, Footer, Quiz],
   templateUrl: './reader.component.html',
   styleUrl: './reader.component.css',
 })
@@ -33,7 +35,8 @@ export class ReaderComponent {
   chunks = signal<string[]>([]);
   currentChunkIndex = signal(0);
   session: ReadingSession | null = null;
-  view = signal<'upload' | 'reading'>('upload');
+  view = signal<'upload' | 'reading' | 'quiz' | 'complete'>('upload'); // add 'quiz'
+  quizQuestions = signal<QuizQuestion[]>([]);
 
   readonly currentChunkText = computed(() => this.chunks()[this.currentChunkIndex()] ?? '');
   readonly currentSummary = computed(() =>
@@ -156,11 +159,19 @@ export class ReaderComponent {
     const next = this.currentChunkIndex() + 1;
     if (next < this.chunks().length) {
       this.currentChunkIndex.set(next);
-    } else if (this.session) {
-      this.db.completeSession(this.session.id);
+      return;
+    }
+    if (!this.session) return;
+
+    const fullText = this.chunks().join(' ');
+    const questions = this.textProcessing.generateQuizQuestions(fullText, 3);
+    if (questions.length) {
+      this.quizQuestions.set(questions);
+      this.view.set('quiz');
+    } else {
+      this.finishSession(0); // content too short for a fair quiz — just wrap up
     }
   }
-
   startOver(): void {
     this.speech.stop();
     this.pastedText = '';
@@ -209,5 +220,20 @@ export class ReaderComponent {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  }
+
+  
+
+  onQuizFinished(result: { correct: number; total: number }): void {
+    const score = result.total ? Math.round((result.correct / result.total) * 100) : 0;
+    this.finishSession(score);
+  }
+
+  private finishSession(score: number): void {
+    if (!this.session) return;
+    this.db.updateSession(this.session.id, { score });
+    this.db.completeSession(this.session.id);
+    this.session = { ...this.session, score };
+    this.view.set('complete');
   }
 }

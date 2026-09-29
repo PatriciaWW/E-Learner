@@ -141,6 +141,24 @@
         </div>
       </section>
     }
+
+    @if (view() === 'quiz') {
+  <section class="reading-section quiz-section" aria-labelledby="quiz-heading">
+    <h2 id="quiz-heading">Quick check</h2>
+    <app-quiz [questions]="quizQuestions()" (finished)="onQuizFinished($event)" />
+  </section>
+}
+
+@if (view() === 'complete') {
+  <section class="reading-section complete-section" aria-labelledby="complete-heading">
+    <h2 id="complete-heading">🎉 Session complete!</h2>
+    <p>Score earned: {{ session?.score ?? 0 }} pts</p>
+    <div class="navigation-row">
+      <button class="secondary-btn" (click)="startOver()">Read Something Else</button>
+      <a class="primary-btn" routerLink="/profile">View Progress</a>
+    </div>
+  </section>
+}
   </main>
 
 </div>
