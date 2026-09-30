@@ -238,11 +238,6 @@ input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 4px; bac
 }
 .summary-label { display: block; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary-color); margin-bottom: 0.35rem; }
 
-.badge {
-  background: #fff3cd; color: #856404; font-size: 0.7rem; padding: 0.2rem 0.5rem;
-  border-radius: 4px; font-weight: 600; white-space: nowrap;
-}
-
 .app-main { flex: 1; display: flex; min-width: 0; }
 .app-main > router-outlet + * { flex: 1; display: flex; min-width: 0; }
 
@@ -331,6 +326,10 @@ a{
 .bord{
     border: 1px solid rgb(206, 206, 206);
     border-radius: 4px;
+}
+.bord2{
+    border: 4px dashed var(--border-color);
+
 }
 
 .bord1{

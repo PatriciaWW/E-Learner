@@ -1,15 +1,34 @@
-export type BadgeCategory = 'points' | 'consistency';
-
 export interface Badge {
   id: string;
   name: string;
+  svg: string;
   description: string;
-  icon: string;
-  category: BadgeCategory;
-  threshold: number; // points needed, or streak-days needed
+  points: number;
+  threshold: number; // no. of days logged in/ activities activated to earn 
+  activity?: BadgeActivity;
+
 }
+
+export type BadgeActivity =
+  | 'login'
+  | 'hello-world'
+  | 'quiz'
+  | 'learning'
+  | 'streak'
+  | 'habit'
+  | 'devoted';
+
 
 export interface EarnedBadge extends Badge {
   earned: boolean;
-  progress: number; // 0–100, for a "3/7 days" style progress bar
+}
+
+export interface BadgeProgress {
+  profileId: string;
+  currentStreak: number;
+  longestStreak: number;
+  totalLoginDays: number;
+  activities: BadgeActivity[];
+  earnedBadgeIds: string[];
+  lastLoginDate: string | null;
 }

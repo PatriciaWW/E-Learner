@@ -10,7 +10,7 @@
       <span class="big-avatar">{{ avatar }}</span>
       <div>
         <h3 class="profile-page-name">{{ p.name }}</h3>
-        <div class="profile-page-score">⭐ {{ p.totalScore }} pts · {{ p.sessionsCount }} sessions</div>
+        <div class="profile-page-score">⭐ {{ totalPoints }} pts · 🔥 Hot Streak {{ currentStreak }}</div>
       </div>
     </div>
 
@@ -18,42 +18,49 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon">📚</div>
-          <div class="stat-label">Sessions Completed</div>
-          <div class="stat-value">{{ s.sessionsCompleted }}</div>
+          <div class="stat-label">Longest Streak 🔥</div>
+          <div class="stat-value">{{ longestStreak }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🧾</div>
-          <div class="stat-label">Total Sessions Started</div>
-          <div class="stat-value">{{ s.totalSessions }}</div>
+          <div class="stat-label">Days Logged In </div>
+          <div class="stat-value">{{ totalLoginDays }}</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">⭐</div>
-          <div class="stat-label">Total Score</div>
-          <div class="stat-value">{{ s.totalScore }}</div>
-        </div>
-      </div>
-      <!-- profile.html, inside the @if (profile(); as p) block, after the stats-grid -->
-      <div class="badges-section">
-        <h3 class="udog">Badges</h3>
-        <div class="badges-grid">
-          @for (b of badges(); track b.id) {
-            <div class="badge-card" [class.locked]="!b.earned">
-              <div class="badge-icon">{{ b.icon }}</div>
-              <div class="badge-name">{{ b.name }}</div>
-              <div class="badge-desc">{{ b.description }}</div>
-              @if (!b.earned) {
-                <div class="badge-progress-track">
-                  <div class="badge-progress-fill" [style.width.%]="b.progress"></div>
-                </div>
-              }
-            </div>
-          }
+          <div class="stat-label">Total Points</div>
+          <div class="stat-value">{{ totalPoints }}</div>
         </div>
       </div>
     }
+    <!-- profile.html, inside the @if (profile(); as p) block, after the stats-grid -->
+    <div class="container badges-section">
+      <h4 class="udog fw-bold">Badges</h4>
+        <div class="row">
+          @for (b of badges; track b.id) {
+            <div class="col-md-4 card bord2 text-center align-items-center" >
+              <div class="badge-card " [class.locked]="!b.earned">
+                <img src="{{ b.svg }}" alt="{{b.id}}" width="180px" height="180px"  />
+                <!-- <p class="">{{ b.name }}</p> -->
+                <!-- <p class="">{{ b.description }}</p> -->
+              
+                @if (!b.earned) {
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getProgressPercent(b)"></div>
+                  <span>{{ getProgress(b) }} / {{ b.threshold }}</span>
+                </div>
+                }
+              </div>
+
+            </div>
+          }
+          
+        </div>
+    </div>
+  
 
     <form class="card carda" (ngSubmit)="save()">
-      <h3 class="udog">Customise Profile</h3>
+      <h3 class="udog fw-bold">Customise Profile</h3>
 
       <div class="form-group">
         <label for="edit-name">Your Name</label>
@@ -91,9 +98,10 @@
         <p class="saved-msg" aria-live="polite">✅ Profile updated.</p>
       }
     </form>
+
+
+
   </div>
-
-
 </section>
 }
 

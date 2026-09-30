@@ -6,6 +6,7 @@ import * as monaco from 'monaco-editor';
 import { ApiS } from '../../services/api';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
+import { EarnedBadge } from '../../models/badge.model';
 
 
 @Component({

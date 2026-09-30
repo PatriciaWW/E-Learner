@@ -7,28 +7,31 @@
       <svg viewBox="0 0 40 40" width="48" height="48" aria-hidden="true">
         <circle cx="20" cy="20" r="20" fill="cyan" />
         <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="18"
-          font-family="Lexend,sans-serif" font-weight="bold">EL</text>
+          font-family="Lexend,sans-serif" font-weight="bold">SR</text>
       </svg>
-      <h1 class="bungee">E-LEARNER</h1>
+      <h1 class="bungee">SMART READER</h1>
     </div>
     
     <h5 class="">Personalised learning for every student</h5>
   </div>
 
-  @if (existingProfiles().length) {
-    <h3 class="text-center">Welcome back!</h3>
 
-    <div class="profile-card-area" aria-label="Existing student profiles">
-      @for (p of existingProfiles(); track p.id) {
-        <button class="profile-card" [attr.aria-label]="'Continue as ' + p.name + ', score ' + p.totalScore"
-          (click)="continueAs(p)">
-          <span class="card-avatar">{{ p.avatar }}</span>
-          <span class="card-name">{{ p.name }}</span>
-          <span class="card-score">⭐ {{ p.totalScore }} pts</span>
-        </button>
-      }
-    </div>
-  }
+  <div>
+    @if (existingProfiles().length) {
+      <h4 class="text-center">Welcome back!</h4>
+
+      <div class="profile-card-area" aria-label="Existing student profiles">
+        @for (p of existingProfiles(); track p.id) {
+          <button class="profile-card squishy-btn" [attr.aria-label]="'Continue as ' + p.name + ', score ' + p.totalScore"
+            (click)="continueAs(p)">
+            <span class="card-avatar">{{ p.avatar }}</span>
+            <span class="card-name">{{ p.name }}</span>
+            <span class="card-score">⭐ {{ totalPoints }} pts</span>
+          </button>
+        }
+      </div>
+    }
+  </div>
 
   <form class="carda" (ngSubmit)="register()" #f="ngForm">
     <h2>Create Your Profile</h2>
@@ -64,7 +67,7 @@
       </select>
     </div>
 
-    <button type="submit" class="primary-btn full-width">Start Learning →</button>
+    <button type="submit" class="primary-btn full-width squishy-btn">Start Learning →</button>
   </form>
 </div>
 

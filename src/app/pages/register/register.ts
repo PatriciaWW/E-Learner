@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DbService } from '../../services/db.service';
 import { LearningMode, StudentProfile } from '../../models/profile.model';
+import { BadgeService } from '../../services/badge.service';
 
 const AVATARS: { emoji: string; label: string }[] = [
   { emoji: '🦁', label: 'Lion' },
@@ -23,9 +24,11 @@ const AVATARS: { emoji: string; label: string }[] = [
 export class RegisterComponent {
   private db = inject(DbService);
   private router = inject(Router);
+  private badgeService = inject(BadgeService);
 
   readonly avatars = AVATARS;
   readonly existingProfiles = signal<StudentProfile[]>([]);
+  totalPoints = 0;
 
   name = '';
   selectedAvatar = AVATARS[0].emoji;
@@ -34,6 +37,8 @@ export class RegisterComponent {
 
   constructor() {
     this.existingProfiles.set(this.db.getProfiles());
+    this.totalPoints =
+      this.badgeService.getTotalPoints();
   }
 
   pickAvatar(emoji: string): void {

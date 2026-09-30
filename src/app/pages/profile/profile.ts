@@ -6,6 +6,7 @@ import { LearningMode } from '../../models/profile.model';
 import { Nav } from '../nav/nav';
 import { Footer } from '../footer/footer';
 import { BadgeService } from '../../services/badge.service';
+import { EarnedBadge } from '../../models/badge.model';
 
 const AVATARS: { emoji: string; label: string }[] = [
   { emoji: '🦁', label: 'Lion' },
@@ -14,6 +15,7 @@ const AVATARS: { emoji: string; label: string }[] = [
   { emoji: '🚀', label: 'Rocket' },
   { emoji: '🌟', label: 'Star' },
   { emoji: '🐢', label: 'Turtle' },
+  { emoji: '🐱', label: 'Cat' }
 ];
 
 @Component({
@@ -26,12 +28,18 @@ const AVATARS: { emoji: string; label: string }[] = [
 export class ProfileComponent {
   private db = inject(DbService);
   private router = inject(Router)
+  private badgeService = inject(BadgeService);
+  badges: EarnedBadge[] = [];
 
+  currentStreak = 0;
+  longestStreak = 0;
+  totalLoginDays = 0;
+  totalPoints = 0;
   readonly avatars = AVATARS;
   readonly profile = this.db.currentProfile;
   readonly stats = computed(() => {
     const p = this.profile();
-    return p ? this.db.getProfileStats(p.id) : null;
+    return p ? this.db.getProfiles() : null;
   });
 
   name = '';
@@ -69,10 +77,45 @@ export class ProfileComponent {
     this.router.navigate(['/register']);
   }
 
-  // profile.ts
-  private badgeService = inject(BadgeService);
-  readonly badges = computed(() => {
-    const p = this.profile();
-    return p ? this.badgeService.getBadgesForProfile(p) : [];
-  });
+
+  // BADGES CALL AND DISPLAY  --------------------------------------------------------------------
+  ngOnInit(): void {
+    // Record today's login
+    this.badgeService.recordLogin();
+
+    // Get badge information
+    this.loadBadges();
+  }
+
+  loadBadges(): void {
+    this.badges = this.badgeService.getBadges();
+
+    this.currentStreak =
+      this.badgeService.getCurrentStreak();
+
+    this.longestStreak =
+      this.badgeService.getLongestStreak();
+
+    this.totalLoginDays =
+      this.badgeService.getTotalLoginDays();
+
+    this.totalPoints =
+      this.badgeService.getTotalPoints();
+  }
+
+  // Badge Progress
+  getProgress(badge: EarnedBadge): number {
+  return this.db.getBadgeProgressValue(
+    this.db.currentProfile()!.id,
+    badge
+  );
+}
+
+getProgressPercent(badge: EarnedBadge): number {
+  return Math.min(
+    (this.getProgress(badge) / badge.threshold) * 100,
+    100
+  );
+}
+
 }
